@@ -7,6 +7,7 @@ import Farm from './components/Farm/Farm'
 import Shop from './components/Shop/Shop'
 import EndgameModal from './components/Modals/EndgameModal'
 import StartGameModal from './components/Modals/StartGameModal'
+import ConfirmModal from './components/Modals/ConfirmModal'
 
 // Importando hooks
 import { useGameResources } from './hooks/useGameResources'
@@ -52,6 +53,10 @@ function App() {
   
   // Estado para armazenar as animações de clique
   const [clickAnimations, setClickAnimations] = useState([]);
+  
+  // Estados para os modais de confirmação
+  const [showResetGameModal, setShowResetGameModal] = useState(false);
+  const [showResetRankModal, setShowResetRankModal] = useState(false);
   
   // Referência para o intervalo de atualização do cooldown
   const cooldownIntervalRef = useRef(null);
@@ -220,42 +225,59 @@ function App() {
     }
   };
   
-  // Função para reiniciar o jogo
-  const resetGame = () => {
-    if (confirm("Tem certeza que deseja reiniciar o jogo? Todo o progresso será perdido.")) {
-      setCoins(0);
-      setClickValue(1);
-      setMultiplierPurchases(0);
-      setAutoClickerPurchases(0);
-      setCriticalClickChance(0);
-      setCriticalPurchases(0);
-      setTempMultiplierActive(false);
-      setTempMultiplierCooldown(false);
-      setTempMultiplierPurchases(0);
-      setGameStartTime(null); // Define como null ao invés de Date.now()
-      setGameCompleted(false);
-      setShowEndgameModal(false);
-      setShowStartModal(true);
-      setMenuOpen(false);
-      
-      // Limpa os temporizadores
-      if (cooldownIntervalRef.current) {
-        clearInterval(cooldownIntervalRef.current);
-      }
-      if (timerIntervalRef.current) {
-        clearInterval(timerIntervalRef.current);
-      }
-      
-      // Limpa o localStorage relacionado ao progresso do jogo
-      localStorage.removeItem('farmCoins');
-      localStorage.removeItem('farmClickValue');
-      localStorage.removeItem('multiplierPurchases');
-      localStorage.removeItem('autoClickerPurchases');
-      localStorage.removeItem('criticalClickChance');
-      localStorage.removeItem('criticalPurchases');
-      localStorage.removeItem('tempMultiplierPurchases');
-      localStorage.removeItem('gameStartTime');
+  // Função para mostrar o modal de confirmação de reinício do jogo
+  const confirmResetGame = () => {
+    setShowResetGameModal(true);
+    setMenuOpen(false);
+  };
+  
+  // Função para executar o reinício do jogo após confirmação
+  const executeResetGame = () => {
+    setCoins(0);
+    setClickValue(1);
+    setMultiplierPurchases(0);
+    setAutoClickerPurchases(0);
+    setCriticalClickChance(0);
+    setCriticalPurchases(0);
+    setTempMultiplierActive(false);
+    setTempMultiplierCooldown(false);
+    setTempMultiplierPurchases(0);
+    setGameStartTime(null); // Define como null ao invés de Date.now()
+    setGameCompleted(false);
+    setShowEndgameModal(false);
+    setShowStartModal(true);
+    setShowResetGameModal(false);
+    
+    // Limpa os temporizadores
+    if (cooldownIntervalRef.current) {
+      clearInterval(cooldownIntervalRef.current);
     }
+    if (timerIntervalRef.current) {
+      clearInterval(timerIntervalRef.current);
+    }
+    
+    // Limpa o localStorage relacionado ao progresso do jogo
+    localStorage.removeItem('farmCoins');
+    localStorage.removeItem('farmClickValue');
+    localStorage.removeItem('multiplierPurchases');
+    localStorage.removeItem('autoClickerPurchases');
+    localStorage.removeItem('criticalClickChance');
+    localStorage.removeItem('criticalPurchases');
+    localStorage.removeItem('tempMultiplierPurchases');
+    localStorage.removeItem('gameStartTime');
+  };
+  
+  // Função para mostrar o modal de confirmação de reinício do ranking
+  const confirmResetRank = () => {
+    setShowResetRankModal(true);
+    setMenuOpen(false);
+  };
+  
+  // Função para executar o reinício do ranking após confirmação
+  const executeResetRank = () => {
+    setTimeRecords([]);
+    localStorage.removeItem('timeRecords');
+    setShowResetRankModal(false);
   };
   
   // Função para iniciar um novo jogo após completar
@@ -299,17 +321,26 @@ function App() {
     setMenuOpen(!menuOpen);
   };
   
-  // Função para resetar os recordes de tempo (rank)
-  const resetRank = () => {
-    if (confirm("Tem certeza que deseja apagar todos os recordes? Esta ação não pode ser desfeita.")) {
-      setTimeRecords([]);
-      localStorage.removeItem('timeRecords');
-      setMenuOpen(false);
-    }
-  };
-  
   return (
     <div className="game-container">
+      {/* Modal de confirmação para reiniciar o jogo */}
+      <ConfirmModal
+        isOpen={showResetGameModal}
+        onClose={() => setShowResetGameModal(false)}
+        onConfirm={executeResetGame}
+        title="Reiniciar Jogo"
+        message="Tem certeza que deseja reiniciar o jogo? Todo o progresso será perdido."
+      />
+      
+      {/* Modal de confirmação para reiniciar o ranking */}
+      <ConfirmModal
+        isOpen={showResetRankModal}
+        onClose={() => setShowResetRankModal(false)}
+        onConfirm={executeResetRank}
+        title="Reiniciar Ranking"
+        message="Tem certeza que deseja apagar todos os recordes? Esta ação não pode ser desfeita."
+      />
+      
       <StartGameModal 
         showStartModal={showStartModal}
         startGame={startGame}
@@ -328,8 +359,8 @@ function App() {
         elapsedTime={elapsedTime}
         menuOpen={menuOpen}
         toggleMenu={toggleMenu}
-        resetGame={resetGame}
-        resetRank={resetRank}
+        resetGame={confirmResetGame}
+        resetRank={confirmResetRank}
         gameStartTime={gameStartTime}
       />
       

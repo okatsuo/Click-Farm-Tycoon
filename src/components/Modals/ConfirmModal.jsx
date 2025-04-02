@@ -5,7 +5,7 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay confirm-modal-overlay">
       <div className="modal-content confirm-modal">
         <h2>{title}</h2>
         <p>{message}</p>

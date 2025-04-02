@@ -5,7 +5,7 @@ const EndgameModal = ({ showEndgameModal, elapsedTime, timeRecords, formatTime, 
   if (!showEndgameModal) return null;
   
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay endgame-modal">
       <div className="modal-content">
         <h2>🏆 Parabéns! 🏆</h2>
         <p>Você vendeu sua fazenda e agora está aposentado!</p>

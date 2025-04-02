@@ -8,7 +8,20 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1000; /* Z-index base para todos os modais */
+}
+
+/* Ajustando z-index para cada tipo de modal */
+.start-game-modal {
   z-index: 1000;
+}
+
+.endgame-modal {
+  z-index: 1010;
+}
+
+.confirm-modal-overlay {
+  z-index: 1020; /* Z-index mais alto para os modais de confirmação */
 }
 
 .modal-content {

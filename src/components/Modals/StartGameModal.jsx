@@ -5,7 +5,7 @@ const StartGameModal = ({ showStartModal, startGame }) => {
   if (!showStartModal) return null;
 
   return (
-    <div className="modal-overlay">
+    <div className="modal-overlay start-game-modal">
       <div className="modal-content">
         <h2>Bem-vindo à Fazenda!</h2>
         <p>Clique para ganhar moedas, compre melhorias e torne sua fazenda próspera!</p>

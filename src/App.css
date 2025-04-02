@@ -241,7 +241,7 @@ html {
 }
 
 .shop-container {
-  width: 30%;
+  width: 40%;
   margin-left: 20px;
   border-left: 3px solid #5c3c10;
   padding-left: 20px;
@@ -260,11 +260,11 @@ html {
 }
 
 .shop-items {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 15px;
   justify-content: center;
-  padding-bottom: 30px; /* Added padding at the bottom to ensure last item is visible when scrolling */
+  padding-bottom: 30px;
 }
 
 .shop-item {
@@ -272,40 +272,45 @@ html {
   border: 3px solid #5c3c10;
   border-radius: 10px;
   padding: 15px;
-  width: 250px;
+  min-width: 0; /* Permite que o item encolha abaixo da largura do conteúdo */
+  height: auto; /* Mudado de 100% para auto para evitar distorções */
   text-align: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   transition: transform 0.2s;
   position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
-.shop-item:hover {
-  transform: translateY(-5px);
-}
-
+/* Certifique-se de que o conteúdo interno não force dimensões mínimas */
 .shop-item-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 10px;
+  flex-shrink: 0;
+  min-width: 0; /* Permite encolhimento */
 }
 
 .shop-item h3 {
   margin: 0;
   color: #5c3c10;
   font-size: 1.1rem;
+  white-space: nowrap; /* Evita quebra de linha no título */
+  overflow: hidden; /* Esconde texto que ultrapassa */
+  text-overflow: ellipsis; /* Adiciona ... quando o texto é cortado */
 }
 
-.info-icon {
-  cursor: help;
-  font-size: 1.2rem;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-  position: relative;
+.shop-item-details {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: space-between;
+  min-width: 0; /* Permite encolhimento */
 }
 
-.info-icon:hover {
-  opacity: 1;
+.shop-item:hover {
+  transform: translateY(-5px);
 }
 
 .price-purchases {
@@ -428,6 +433,7 @@ button.active-power {
   margin-top: 15px;
   margin-bottom: 20px; /* Added bottom margin for the last item */
   animation: glow 1.5s infinite alternate;
+  grid-column: span 2;
 }
 
 @keyframes glow {
@@ -446,6 +452,7 @@ button.active-power {
   margin-top: 15px;
   margin-bottom: 20px;
   opacity: 0.85;
+  grid-column: span 2;
 }
 
 .endgame-item h3 {
@@ -582,12 +589,17 @@ button.active-power {
   }
   
   .shop-items {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr; /* On mobile, switch back to single column */
   }
   
   .shop-item {
-    width: 90%;
+    width: 100%; /* Usa largura total */
+    min-width: 0;
+    margin: 0 auto; /* Centraliza na coluna */
+  }
+
+  .endgame-item, .endgame-item-disabled {
+    grid-column: span 1; /* On mobile, endgame item spans single column */
   }
 
   .endgame-content {

@@ -61,21 +61,25 @@ const Farm = ({
         ))}
       </div>
 
-      {/* Top 3 Records Display */}
-      {timeRecords && timeRecords.length > 0 && (
-        <div className="top-records">
-          <h3>Melhores Tempos</h3>
-          <div className="records-list">
-            {timeRecords.slice(0, 3).map((record, index) => (
+      {/* Top 3 Records Display - Sempre exibido */}
+      <div className="top-records">
+        <h3>Melhores Tempos</h3>
+        <div className="records-list">
+          {timeRecords && timeRecords.length > 0 ? (
+            timeRecords.slice(0, 3).map((record, index) => (
               <div key={index} className="record-item">
                 <span className="rank">{index + 1}º</span>
                 <span className="time">{formatTime(record.time)}</span>
                 <span className="date">{record.date}</span>
               </div>
-            ))}
-          </div>
+            ))
+          ) : (
+            <div className="no-records-message">
+              Nenhum jogo finalizado ainda. Complete o jogo para registrar seu tempo!
+            </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

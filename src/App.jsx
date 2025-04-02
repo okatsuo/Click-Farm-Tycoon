@@ -16,10 +16,24 @@ import { useGameTime } from './hooks/useGameTime'
 import * as priceUtils from './utils/prices'
 
 function App() {
+  // Utilizando os hooks personalizados para obter o gameStartTime primeiro
+  const {
+    gameStartTime, setGameStartTime,
+    gameCompleted, setGameCompleted,
+    elapsedTime, setElapsedTime,
+    timeRecords, setTimeRecords,
+    showEndgameModal, setShowEndgameModal,
+    timerIntervalRef, formatTime
+  } = useGameTime();
+  
   // Estado para controlar a exibição do modal de início
-  const [showStartModal, setShowStartModal] = useState(true);
+  // Agora o modal só aparece se gameStartTime for null (jogo não iniciado)
+  const [showStartModal, setShowStartModal] = useState(() => {
+    // Se gameStartTime existe e não é null, o jogo foi iniciado
+    return gameStartTime === null;
+  });
 
-  // Utilizando os hooks personalizados
+  // Utilizando os demais hooks personalizados
   const {
     coins, setCoins,
     clickValue, setClickValue,
@@ -32,15 +46,6 @@ function App() {
     tempMultiplierPurchases, setTempMultiplierPurchases,
     cooldownTimeLeft, setCooldownTimeLeft
   } = useGameResources();
-  
-  const {
-    gameStartTime, setGameStartTime,
-    gameCompleted, setGameCompleted,
-    elapsedTime, setElapsedTime,
-    timeRecords, setTimeRecords,
-    showEndgameModal, setShowEndgameModal,
-    timerIntervalRef, formatTime
-  } = useGameTime();
   
   // Estado para controlar a visibilidade do menu dropdown
   const [menuOpen, setMenuOpen] = useState(false);
@@ -127,7 +132,7 @@ function App() {
   const buyAutoClicker = () => {
     const price = priceUtils.getAutoClickerPrice(autoClickerPurchases);
     
-    if (coins >= price && autoClickerPurchases < 10 && !showStartModal) {
+    if (coins >= price && autoClickerPurchases < 5 && !showStartModal) {
       setCoins(Math.round((coins - price) * 100) / 100);
       setAutoClickerPurchases(autoClickerPurchases + 1);
     }

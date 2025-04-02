@@ -28,8 +28,8 @@ export const getEndgamePrice = () => {
 // Função para calcular o poder do Auto Clicker para o nível atual
 export const getAutoClickPower = (autoClickerPurchases) => {
   if (autoClickerPurchases === 0) return 0;
-  // 2^(n-1) -> 1, 2, 4, 8, 16, 32, 64, 128, 256, 512
-  return Math.pow(2, autoClickerPurchases - 1);
+  // 5 clicks por nível -> 5, 10, 15, 20, 25
+  return 5 * autoClickerPurchases;
 };
 
 // Formata o tempo de cooldown em minutos:segundos

@@ -27,7 +27,7 @@ const Farm = ({
     <div className="game-main-content">
       <div className="resources">
         <div className="resource">
-          💰 Dinheiro: {Math.floor(coins)}
+          💰 Moedas: {Math.floor(coins)}
         </div>
         <div className="resource">
           ⚡ Poder de Clique: {clickValue}

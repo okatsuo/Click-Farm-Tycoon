@@ -560,6 +560,24 @@ button.active-power {
   transform: scale(1.05);
 }
 
+/* Add this to your existing CSS file */
+.info-icon {
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  color: white;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  margin-left: 8px;
+}
+
+.info-icon:hover {
+  transform: scale(1.1);
+}
+
 @media (max-width: 768px) {
   .farm-game {
     flex-direction: column;
